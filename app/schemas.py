@@ -7,18 +7,21 @@ class WeightBase(BaseModel):
     weight: float = Field(..., examples=[49.5])
 
 
+class WeightCreate(WeightBase):
+    pass
+
+
 class Weight(WeightBase):
     id: int
     exercise_id: int
     created_at: datetime
-    updated_at: datetime
 
     class Config:
         from_attributes = True
 
 
 class ExerciseBase(BaseModel):
-    muslce_group: str = Field(..., examples=["Brust"])
+    muscle_group: str = Field(..., examples=["Brust"])
     exercise: str = Field(..., examples=["Bankdrücken"])
 
 
@@ -28,8 +31,8 @@ class ExerciseCreate(ExerciseBase):
 
 class Exercise(ExerciseBase):
     id: int
-    current_weight: Optional[float] = None
-    weight_history: List[Weight] = []
+    updated_at: datetime
+    weight_history: Optional[List[Weight]] = None
 
     class Config:
         from_attributes = True
