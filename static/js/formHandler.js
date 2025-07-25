@@ -1,11 +1,11 @@
 import {
     exerciseForm, muscleGroupInput, exerciseNameInput, weightInput,
     submitButton, cancelEditButton, addWeightButton, formTitle,
-    weightInputContainer, editingExerciseId, setEditingExerciseId 
+    weightInputContainer, editingExerciseId, setEditingExerciseId
 } from "./constants.js";
 import { showMessage } from "./utils.js";
 // Using the renamed deleteExercise function from apiService
-import { getExerciseById, createExercise, addWeightHistoryEntry, deleteExercise as deleteExerciseApi } from "./apiService.js"; 
+import { getExerciseById, createExercise, addWeightHistoryEntry, deleteExercise as deleteExerciseApi } from "./apiService.js";
 import { fetchExercises } from "./main.js";
 
 /**
@@ -40,7 +40,7 @@ export async function loadExerciseForAddWeight(id) {
         // Set placeholder to the latest weight, if available, otherwise clear
         weightInput.placeholder = exercise.weight_history.length > 0 ? exercise.weight_history[0].weight : '';
         weightInput.value = ''; // Clear actual value to ensure user enters new weight
-        
+
         // Make muscle group and exercise name non-editable
         muscleGroupInput.readOnly = true;
         exerciseNameInput.readOnly = true;
@@ -50,14 +50,25 @@ export async function loadExerciseForAddWeight(id) {
         formTitle.textContent = `Gewicht hinzufügen für: ${exercise.muscle_group} - ${exercise.exercise}`;
         submitButton.style.display = "none"; // Hide "Hinzufügen" button (for new exercises)
         cancelEditButton.style.display = "inline-block"; // Show cancel button
-        
+
         weightInputContainer.style.display = "block"; // Ensure weight input is visible
         addWeightButton.style.display = "inline-block"; // Show "Gewicht hinzufügen" button
 
         weightInput.required = true; // Weight is required when adding
         weightInput.focus(); // Set focus to weight input for immediate entry
 
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top of the page
+        // Scrolling the 'Add Weight' button into view. As this button is at the form's end,
+        // it should position the entire relevant form area, including the weight input,
+        // above the virtual keyboard, making it feel like the "very bottom" without content cutoff.
+        setTimeout(() => {
+            // Ensure the addWeightButton exists and is visible. Fallback to exerciseForm if not.
+            const elementToScrollTo = addWeightButton.style.display !== 'none' ? addWeightButton : exerciseForm;
+
+            if (elementToScrollTo) {
+                elementToScrollTo.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }, 150); // Increased timeout slightly to 150ms to give the keyboard more time to appear
+
     } catch (error) {
         console.error("Fehler beim Laden der Übung zum Gewicht hinzufügen:", error); // Log the error
         showMessage("Fehler beim Laden der Übung.", "error"); // Show user-friendly error message
@@ -142,7 +153,7 @@ export async function deleteExercise(id) {
 
     try {
         // Use the renamed API function (deleteExerciseApi)
-        await deleteExerciseApi(id); 
+        await deleteExerciseApi(id);
         showMessage("Übung erfolgreich gelöscht!", "success"); // Show success message
         fetchExercises(); // Refresh the list of exercises
         if (editingExerciseId === id) { // If the deleted exercise was currently being edited
