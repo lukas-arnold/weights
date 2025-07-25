@@ -1,0 +1,515 @@
+:root {
+    /* Define central colors, shadows, and radii for easy maintenance */
+    --primary-color: #6a8e71; /* Soft green */
+    --secondary-color: #f0f4f8; /* Light, cool gray for backgrounds */
+    --accent-color: #8bb78d; /* Lighter accent for hover/focus states */
+    --text-color: #3f4a56; /* Dark charcoal for primary text */
+    --light-text-color: #7a828a; /* Lighter gray for secondary text */
+    --border-color: #e0e4e8; /* Light border color */
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.12);
+    --border-radius-soft: 10px;
+    --border-radius-button: 8px;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex; /* For central alignment on large screens */
+    justify-content: center;
+    align-items: flex-start; /* Align to the top */
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%; /* Ensure it takes 100% width on smaller screens */
+    margin: 20px auto; /* Vertical spacing, horizontally centered */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--shadow-medium);
+    animation: fadeInContainer 0.5s ease-out; /* Animation on load */
+}
+
+@keyframes fadeInContainer {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1, h2, h3, h4 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 3em; /* Slightly larger */
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+h2 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-top: 40px;
+    color: var(--text-color); /* Heading color adjusted */
+}
+
+/* Form styles */
+#exerciseForm {
+    margin-top: 30px;
+    background-color: var(--secondary-color);
+    padding: 25px;
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--shadow-light);
+}
+
+#exerciseForm div {
+    margin-bottom: 20px;
+}
+
+#exerciseForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+#exerciseForm input[type="text"],
+#exerciseForm input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-button);
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#exerciseForm input[type="text"]:focus,
+#exerciseForm input[type="number"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(106, 142, 113, 0.2); /* Soft focus glow */
+    outline: none;
+}
+
+#exerciseForm button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    font-size: 1.05em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-right: 15px;
+    font-weight: 700;
+    box-shadow: var(--shadow-light);
+}
+
+#exerciseForm button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px); /* Slight "lift" effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#exerciseForm button:active {
+    transform: translateY(0); /* Return to original position on click */
+    box-shadow: var(--shadow-light);
+}
+
+/* Specific button styles */
+#cancelEditButton {
+    background-color: #e74c3c; /* Softer red */
+}
+#cancelEditButton:hover {
+    background-color: #c0392b;
+}
+
+#addWeightButton {
+    background-color: #3498db; /* Softer blue */
+}
+#addWeightButton:hover {
+    background-color: #2980b9;
+}
+
+
+/* Message styles */
+#message {
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: var(--border-radius-soft);
+    text-align: center;
+    font-weight: 700;
+    display: none;
+    animation: fadeInMessage 0.4s ease-out;
+}
+
+@keyframes fadeInMessage {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid #b7e3be; /* Matching border color */
+}
+
+.message.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid #f4b4b7;
+}
+
+/* Table styles */
+#exercisesTable {
+    width: 100%;
+    border-collapse: separate; /* For rounded table corners */
+    border-spacing: 0; /* Important for separate borders */
+    margin-top: 30px;
+    box-shadow: var(--shadow-light);
+    border-radius: var(--border-radius-soft);
+    overflow: hidden; /* For rounded corners on the header */
+}
+
+#exercisesTable th,
+#exercisesTable td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#exercisesTable th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+#exercisesTable tr:first-child th:first-child {
+    border-top-left-radius: var(--border-radius-soft); /* Rounded corners for header */
+}
+#exercisesTable tr:first-child th:last-child {
+    border-top-right-radius: var(--border-radius-soft);
+}
+
+
+#exercisesTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#exercisesTable tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer; /* Indicates that rows are interactive */
+}
+
+/* Last row without bottom border */
+#exercisesTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Action buttons in the table */
+.actions {
+    display: flex; /* NEW: Make the actions container a flexbox */
+    gap: 8px; /* NEW: Add space between buttons */
+    flex-wrap: nowrap; /* NEW: Prevent buttons from wrapping on desktop */
+}
+
+.actions button {
+    background-color: #5d8aa8; /* Subtle blue for Edit */
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    font-size: 0.85em;
+    /* margin-right: 8px; */ /* REMOVED: Using gap instead */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0; /* NEW: Prevent buttons from shrinking if space is tight */
+}
+
+.actions button:hover {
+    background-color: #4a7593;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actions .delete-btn {
+    background-color: #dc3545; /* Stronger red for Delete */
+}
+
+.actions .delete-btn:hover {
+    background-color: #c82333;
+}
+
+.actions .history-btn {
+    background-color: #6c757d; /* Gray for History */
+}
+
+.actions .history-btn:hover {
+    background-color: #5a6268;
+}
+
+
+/* Responsive design for smaller screens (Mobile First) */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px 15px;
+        margin: 15px auto;
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    #exerciseForm input[type="text"],
+    #exerciseForm input[type="number"] {
+        width: 100%;
+    }
+
+    #exerciseForm button {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+        padding: 15px; /* Slightly larger buttons for touch */
+    }
+
+    #exercisesTable thead {
+        display: none; /* Hide table header on small screens */
+    }
+
+    #exercisesTable, #exercisesTable tbody, #exercisesTable tr, #exercisesTable td {
+        display: block; /* Display elements as blocks */
+        width: 100%; /* Ensure full width */
+    }
+
+    #exercisesTable tr {
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-soft);
+        box-shadow: var(--shadow-light);
+        overflow: hidden; /* For rounded corners */
+        display: flex; /* Make row a flex container */
+        flex-direction: column; /* Stack table cells */
+    }
+    #exercisesTable tr:hover {
+        background-color: #fff; /* No hover effect on the entire row in mobile mode, as buttons are separate */
+    }
+
+
+    #exercisesTable td {
+        text-align: left; /* Align content to the left */
+        padding-left: 15px; /* Consistent padding for content */
+        padding-right: 15px; /* Add right padding */
+        position: relative;
+        border: none; /* No internal borders in mobile mode */
+        padding-bottom: 5px; /* Smaller bottom padding for more compact look */
+        padding-top: 5px; /* Smaller top padding */
+        display: flex; /* Make td a flex container */
+        flex-wrap: wrap; /* Allow content inside td to wrap */
+        align-items: flex-start; /* Align content to the top-left */
+    }
+    /* Add a border between table cells in mobile view, except the last one in the row */
+    #exercisesTable td:not(:last-child) {
+        border-bottom: 1px solid var(--border-color);
+    }
+
+
+    #exercisesTable td:before {
+        content: attr(data-label); /* Show label from data-label attribute */
+        min-width: 130px; /* Feste Mindestbreite für Labels */
+        flex-shrink: 0; /* Prevent label from shrinking */
+        margin-right: 10px; /* Abstand zwischen Label und Wert */
+        white-space: nowrap; /* Keep label on one line */
+        text-align: left;
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 0.9em;
+    }
+
+    /* Labels for the cells (IMPORTANT: These must be provided with data-label attributes in your HTML <td> elements!) */
+    #exercisesTable tr td:nth-of-type(1):before { content: "Muskelgruppe:"; }
+    #exercisesTable tr td:nth-of-type(2):before { content: "Übung:"; }
+    #exercisesTable tr td:nth-of-type(3):before { content: "Aktuelles Gewicht (kg):"; }
+    #exercisesTable tr td:nth-of-type(4):before { content: "Zuletzt erfasst:"; }
+    #exercisesTable tr td:nth-of-type(5):before { content: "Aktionen:"; }
+
+    .actions {
+        text-align: center; /* Action buttons aligned centrally on mobile devices */
+        padding: 15px 10px; /* Adjusted padding */
+        border-top: 1px solid var(--border-color); /* Separator line to the data */
+        margin-top: 0; /* Remove top margin, handled by padding */
+        display: flex; /* Make actions a flex container */
+        flex-direction: column; /* Buttons stacked */
+        align-items: flex-start; /* Links-ausgerichtet */
+        gap: 8px; /* Space between buttons */
+    }
+
+    .actions button {
+        width: 100%; /* Buttons take full width of column */
+        max-width: 200px; /* Optional: Max width for buttons */
+        margin-bottom: 0; /* Remove margin-bottom, handled by gap */
+        margin-right: 0; /* Remove margin-right, handled by gap */
+        font-size: 0.8em;
+        padding: 10px 15px;
+    }
+}
+
+/* STYLES FOR THE MODAL */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Positioned above content */
+    z-index: 1000; /* On top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Scrollbar if content is too large */
+    background-color: rgba(0,0,0,0.7); /* Darker background for better focus */
+    padding-top: 50px; /* Space from the top edge */
+    backdrop-filter: blur(5px); /* Soft blur effect */
+    animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% from top and bottom, horizontally centered */
+    padding: 30px;
+    border: none; /* No border, only shadow */
+    border-radius: var(--border-radius-soft);
+    width: 90%; /* Slightly wider on larger screens */
+    max-width: 750px; /* Increased max width */
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    animation: slideInModal 0.4s ease-out; /* Slide-in animation */
+}
+
+@keyframes slideInModal {
+    from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.close-button {
+    color: var(--light-text-color);
+    float: right;
+    font-size: 32px;
+    font-weight: normal; /* Less clunky */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: absolute; /* Absolute positioning for precise placement */
+    top: 15px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--primary-color);
+    transform: rotate(90deg); /* Slight rotation on hover */
+}
+
+#historyModalTitle {
+    font-size: 1.8em;
+    color: var(--text-color);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#weightChart {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    max-height: 350px; /* Maximum height for the chart */
+    background-color: #fcfcfc;
+    padding: 15px;
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--shadow-light);
+}
+
+#historyList {
+    list-style-type: none;
+    padding: 0;
+    max-height: 250px; /* Increased height for the list */
+    overflow-y: auto; /* Scrollbar for the list */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-soft);
+    background-color: #fcfcfc;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inner shadow */
+}
+
+#historyList li {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95em;
+    color: var(--text-color);
+}
+
+#historyList li:last-child {
+    border-bottom: none;
+}
+
+#historyList li:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+#historyList li span:first-child {
+    font-weight: 500;
+    color: var(--light-text-color);
+}
+
+#historyList li span:last-child {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        margin: 15px auto;
+        padding: 20px;
+    }
+    .close-button {
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+    }
+    #weightChart {
+        max-height: 250px;
+    }
+}
