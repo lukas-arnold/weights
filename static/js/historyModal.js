@@ -1,5 +1,5 @@
 import { historyModal, closeButton, historyModalTitle, weightChartCanvas, historyList, currentChart, setCurrentChart } from "./constants.js";
-import { showMessage, formatWeight, formatDateTime } from "./utils.js";
+import { showMessage, formatWeight, formatDateTime } from "./utils.js"; // Beibehalten, da formatWeight für die Liste benötigt wird
 import { getWeightHistory } from "./apiService.js";
 
 /**
@@ -24,7 +24,8 @@ export async function showWeightHistory(exerciseId, muscleGroup, exerciseName) {
 
             // Prepare data for Chart.js
             const labels = sortedHistory.map(entry => formatDateTime(entry.created_at)); // Dates for X-axis labels
-            const dataPoints = sortedHistory.map(entry => formatWeight(entry.weight)); // Weights for Y-axis data points
+            // VERBESSERUNG: Sicherstellen, dass nur numerische Werte für das Diagramm verwendet werden
+            const dataPoints = sortedHistory.map(entry => parseFloat(entry.weight)); // Weights for Y-axis data points, ensure they are numbers
 
             // Destroy existing chart instance if any, to prevent memory leaks and redraw
             if (currentChart) {
@@ -38,32 +39,36 @@ export async function showWeightHistory(exerciseId, muscleGroup, exerciseName) {
                     datasets: [{
                         label: "Gewicht (kg)", // Label for the dataset
                         data: dataPoints,
-                        borderColor: "#4CAF50", // Line color
-                        backgroundColor: "rgba(76, 175, 80, 0.2)", // Area color below the line
-                        tension: 0.1, // Smoothness of the line
-                        fill: false // Do not fill the area below the line
+                        // --- START CHART.JS STYLE OVERHAUL ---
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(), // Use primary color from CSS variables
+                        backgroundColor: 'rgba(106, 142, 113, 0.3)', // Semi-transparent primary color for fill
+                        tension: 0.4, // Smoother line (Bezier curve)
+                        fill: true, // Fill the area below the line
+                        pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(), // Dot color
+                        pointBorderColor: '#fff', // White border for dots
+                        pointRadius: 5, // Larger dots
+                        pointHoverRadius: 7, // Even larger on hover
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        spanGaps: true // WICHTIGE VERBESSERUNG: Verbindet Punkte über 'null'- oder fehlende Datenpunkte hinweg
+                        // --- END CHART.JS STYLE OVERHAUL ---
                     }]
                 },
                 options: {
                     responsive: true, // Chart resizes with its container
                     maintainAspectRatio: false, // Do not maintain aspect ratio
-                    scales: {
-                        x: {
-                            type: "category", // Treat x-axis labels as categories
-                            title: {
-                                display: true,
-                                text: "Datum" // X-axis title
+                    // --- START CHART.JS OPTIONS OVERHAUL ---
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim(), // Legend text color
+                                font: {
+                                    size: 14,
+                                    family: "'Roboto', sans-serif"
+                                }
                             }
                         },
-                        y: {
-                            beginAtZero: false, // Y-axis does not necessarily start at zero
-                            title: {
-                                display: true,
-                                text: "Gewicht (kg)" // Y-axis title
-                            }
-                        }
-                    },
-                    plugins: {
                         tooltip: {
                             callbacks: {
                                 // Custom tooltip label for displaying weight
@@ -77,15 +82,71 @@ export async function showWeightHistory(exerciseId, muscleGroup, exerciseName) {
                                     }
                                     return label;
                                 }
+                            },
+                            // Tooltip styling
+                            backgroundColor: 'rgba(63, 74, 86, 0.9)', // Dark background for tooltips
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(),
+                            borderWidth: 1,
+                            borderRadius: 6, // Rounded tooltip corners
+                            displayColors: true // Show color box in tooltip
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: "category", // Treat x-axis labels as categories
+                            title: {
+                                display: true,
+                                text: "Datum", // X-axis title
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim(), // Title color
+                                font: {
+                                    size: 14,
+                                    family: "'Roboto', sans-serif"
+                                }
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--light-text-color').trim(), // Tick label color
+                                font: {
+                                    family: "'Roboto', sans-serif"
+                                }
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim(), // Grid line color
+                                drawBorder: false // Do not draw axis line
+                            }
+                        },
+                        y: {
+                            beginAtZero: false, // Y-axis does not necessarily start at zero
+                            title: {
+                                display: true,
+                                text: "Gewicht (kg)", // Y-axis title
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim(), // Title color
+                                font: {
+                                    size: 14,
+                                    family: "'Roboto', sans-serif"
+                                }
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--light-text-color').trim(), // Tick label color
+                                font: {
+                                    family: "'Roboto', sans-serif"
+                                }
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim(), // Grid line color
+                                drawBorder: false // Do not draw axis line
                             }
                         }
-                    }
+                    },
+                    // --- END CHART.JS OPTIONS OVERHAUL ---
                 }
             }));
 
             // Populate the history list with individual entries
             history.forEach(entry => {
                 const listItem = document.createElement("li");
+                // Hier verwenden wir weiterhin formatWeight, da es für die Anzeige im Text sinnvoll ist
                 listItem.innerHTML = `
                     <span>${formatDateTime(entry.created_at)}</span>
                     <span><strong>${formatWeight(entry.weight)} kg</strong></span> `;
