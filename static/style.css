@@ -225,6 +225,12 @@ h2 {
 }
 
 /* Action buttons in the table */
+.actions {
+    display: flex; /* NEW: Make the actions container a flexbox */
+    gap: 8px; /* NEW: Add space between buttons */
+    flex-wrap: nowrap; /* NEW: Prevent buttons from wrapping on desktop */
+}
+
 .actions button {
     background-color: #5d8aa8; /* Subtle blue for Edit */
     color: white;
@@ -233,10 +239,11 @@ h2 {
     border-radius: var(--border-radius-button);
     cursor: pointer;
     font-size: 0.85em;
-    margin-right: 8px;
+    /* margin-right: 8px; */ /* REMOVED: Using gap instead */
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0; /* NEW: Prevent buttons from shrinking if space is tight */
 }
 
 .actions button:hover {
@@ -299,7 +306,7 @@ h2 {
 
     #exercisesTable, #exercisesTable tbody, #exercisesTable tr, #exercisesTable td {
         display: block; /* Display elements as blocks */
-        width: 100%;
+        width: 100%; /* Ensure full width */
     }
 
     #exercisesTable tr {
@@ -308,6 +315,8 @@ h2 {
         border-radius: var(--border-radius-soft);
         box-shadow: var(--shadow-light);
         overflow: hidden; /* For rounded corners */
+        display: flex; /* Make row a flex container */
+        flex-direction: column; /* Stack table cells */
     }
     #exercisesTable tr:hover {
         background-color: #fff; /* No hover effect on the entire row in mobile mode, as buttons are separate */
@@ -315,46 +324,59 @@ h2 {
 
 
     #exercisesTable td {
-        text-align: right; /* Align content to the right */
-        padding-left: 50%; /* Leave space for the label */
+        text-align: left; /* Align content to the left */
+        padding-left: 15px; /* Consistent padding for content */
+        padding-right: 15px; /* Add right padding */
         position: relative;
         border: none; /* No internal borders in mobile mode */
-        padding-bottom: 10px; /* Additional spacing between lines in mobile mode */
+        padding-bottom: 5px; /* Smaller bottom padding for more compact look */
+        padding-top: 5px; /* Smaller top padding */
+        display: flex; /* Make td a flex container */
+        flex-wrap: wrap; /* Allow content inside td to wrap */
+        align-items: flex-start; /* Align content to the top-left */
     }
+    /* Add a border between table cells in mobile view, except the last one in the row */
+    #exercisesTable td:not(:last-child) {
+        border-bottom: 1px solid var(--border-color);
+    }
+
 
     #exercisesTable td:before {
         content: attr(data-label); /* Show label from data-label attribute */
-        position: absolute;
-        left: 15px;
-        width: calc(50% - 20px); /* Adjusted width */
-        padding-right: 10px;
-        white-space: nowrap;
+        min-width: 130px; /* Feste Mindestbreite für Labels */
+        flex-shrink: 0; /* Prevent label from shrinking */
+        margin-right: 10px; /* Abstand zwischen Label und Wert */
+        white-space: nowrap; /* Keep label on one line */
         text-align: left;
         font-weight: 700;
-        color: var(--primary-color); /* Adjusted label color */
+        color: var(--primary-color);
         font-size: 0.9em;
     }
 
-    /* Labels for the cells (must be provided with data-label attributes in HTML) */
-    #exercisesTable tr td:nth-of-type(1):before { content: "Muscle Group:"; }
-    #exercisesTable tr td:nth-of-type(2):before { content: "Exercise:"; }
-    #exercisesTable tr td:nth-of-type(3):before { content: "Current Weight (kg):"; }
-    #exercisesTable tr td:nth-of-type(4):before { content: "Last Updated:"; }
-    #exercisesTable tr td:nth-of-type(5):before { content: "Actions:"; }
+    /* Labels for the cells (IMPORTANT: These must be provided with data-label attributes in your HTML <td> elements!) */
+    #exercisesTable tr td:nth-of-type(1):before { content: "Muskelgruppe:"; }
+    #exercisesTable tr td:nth-of-type(2):before { content: "Übung:"; }
+    #exercisesTable tr td:nth-of-type(3):before { content: "Aktuelles Gewicht (kg):"; }
+    #exercisesTable tr td:nth-of-type(4):before { content: "Zuletzt erfasst:"; }
+    #exercisesTable tr td:nth-of-type(5):before { content: "Aktionen:"; }
 
     .actions {
         text-align: center; /* Action buttons aligned centrally on mobile devices */
-        padding-top: 15px;
-        padding-bottom: 10px;
+        padding: 15px 10px; /* Adjusted padding */
         border-top: 1px solid var(--border-color); /* Separator line to the data */
-        margin-top: 10px;
+        margin-top: 0; /* Remove top margin, handled by padding */
+        display: flex; /* Make actions a flex container */
+        flex-direction: column; /* Buttons stacked */
+        align-items: flex-start; /* Links-ausgerichtet */
+        gap: 8px; /* Space between buttons */
     }
 
     .actions button {
-        width: auto; /* Buttons adjust to content */
-        margin-bottom: 5px;
-        margin-right: 5px;
-        font-size: 0.8em; /* Slightly smaller buttons in mobile mode */
+        width: 100%; /* Buttons take full width of column */
+        max-width: 200px; /* Optional: Max width for buttons */
+        margin-bottom: 0; /* Remove margin-bottom, handled by gap */
+        margin-right: 0; /* Remove margin-right, handled by gap */
+        font-size: 0.8em;
         padding: 10px 15px;
     }
 }
