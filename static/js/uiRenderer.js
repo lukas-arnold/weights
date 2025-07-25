@@ -1,6 +1,6 @@
 import { exercisesTableBody } from "./constants.js";
 import { formatWeight, formatDateTime } from "./utils.js";
-import { loadExerciseForAddWeight, deleteExercise } from "./formHandler.js"; 
+import { loadExerciseForAddWeight, deleteExercise } from "./formHandler.js";
 import { showWeightHistory } from "./historyModal.js";
 
 /**
@@ -10,22 +10,33 @@ import { showWeightHistory } from "./historyModal.js";
  */
 export function renderExercises(exercises) {
     exercisesTableBody.innerHTML = ""; // Clear existing table rows
-    
+
     // Display a message if no exercises are present
     if (exercises.length === 0) {
         exercisesTableBody.innerHTML = "<tr><td colspan='5'>Noch keine Kraftwerte vorhanden.</td></tr>"; // German message
         return;
     }
 
-    // Iterate over each exercise and create a table row
-    exercises.forEach(exercise => {
+    // Sort exercises by muscle group and then by exercise name
+    const sortedExercises = [...exercises].sort((a, b) => {
+        // First, sort by muscle_group
+        const muscleGroupComparison = a.muscle_group.localeCompare(b.muscle_group);
+        if (muscleGroupComparison !== 0) {
+            return muscleGroupComparison;
+        }
+        // If muscle groups are the same, then sort by exercise name
+        return a.exercise.localeCompare(b.exercise);
+    });
+
+    // Iterate over each sorted exercise and create a table row
+    sortedExercises.forEach(exercise => {
         const row = exercisesTableBody.insertRow();
 
         // Determine the latest weight entry and its associated data
         const latestWeightEntry = exercise.weight_history && exercise.weight_history.length > 0
-                                   ? exercise.weight_history[0] 
-                                   : null;
-        
+                                        ? exercise.weight_history[0]
+                                        : null;
+
         const currentWeight = latestWeightEntry ? formatWeight(latestWeightEntry.weight) : "N/A";
         const lastUpdatedDate = latestWeightEntry ? formatDateTime(latestWeightEntry.created_at) : "Noch nicht erfasst"; // German message
 
