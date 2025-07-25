@@ -1,0 +1,335 @@
+body {
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Responsiveness for smaller screens */
+    padding: 15px; /* Slightly less padding on small devices */
+}
+
+h1, h2, h3, h4 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #4CAF50;
+}
+
+h2 {
+    font-size: 1.8em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+/* Form styles */
+#exerciseForm div {
+    margin-bottom: 15px;
+}
+
+#exerciseForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+#exerciseForm input[type="text"],
+#exerciseForm input[type="number"] {
+    width: calc(100% - 20px); /* 100% width minus padding */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width */
+    font-size: 1em;
+}
+
+#exerciseForm button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Space between buttons */
+}
+
+#exerciseForm button:hover {
+    background-color: #45a049;
+}
+
+/* Specific button styles, using IDs where appropriate to match HTML */
+/* Cancel button */
+#cancelEditButton {
+    background-color: #f44336; /* Red for cancel */
+}
+#cancelEditButton:hover {
+    background-color: #da190b;
+}
+
+/* Add Weight button */
+#addWeightButton {
+    background-color: #2196F3; /* Blue for add weight */
+}
+#addWeightButton:hover {
+    background-color: #0b7dda;
+}
+
+
+/* Message styles */
+#message {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Hidden by default */
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Table styles */
+#exercisesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#exercisesTable th,
+#exercisesTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+#exercisesTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+#exercisesTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#exercisesTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Action buttons in the table (classes assigned via JS) */
+.actions button {
+    background-color: #007bff; /* Blue for Edit - default for all action buttons */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevents line breaks for small buttons */
+}
+
+.actions button:hover {
+    background-color: #0056b3;
+}
+
+.actions .delete-btn {
+    background-color: #dc3545; /* Red for Delete */
+}
+
+.actions .delete-btn:hover {
+    background-color: #c82333;
+}
+
+.actions .history-btn {
+    background-color: #6c757d; /* Gray for History */
+}
+
+.actions .history-btn:hover {
+    background-color: #5a6268;
+}
+
+
+/* Responsive design for smaller screens (Mobile First) */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    #exerciseForm input[type="text"],
+    #exerciseForm input[type="number"] {
+        width: 100%; /* Full width on small screens */
+    }
+
+    #exerciseForm button {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    #exercisesTable thead {
+        display: none; /* Hide table header on small screens */
+    }
+
+    #exercisesTable, #exercisesTable tbody, #exercisesTable tr, #exercisesTable td {
+        display: block; /* Display elements as blocks */
+        width: 100%;
+    }
+
+    #exercisesTable tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    #exercisesTable td {
+        text-align: right; /* Align content to the right */
+        padding-left: 50%; /* Leave space for the label */
+        position: relative;
+    }
+
+    #exercisesTable td:before {
+        content: attr(data-label); /* Show label from data-label attribute */
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    /* Labels for the cells (must be provided with data-label attributes in HTML) */
+    #exercisesTable tr td:nth-of-type(1):before { content: "Muskelgruppe:"; }
+    #exercisesTable tr td:nth-of-type(2):before { content: "Übung:"; }
+    #exercisesTable tr td:nth-of-type(3):before { content: "Aktuelles Gewicht (kg):"; }
+    #exercisesTable tr td:nth-of-type(4):before { content: "Zuletzt aktualisiert:"; }
+    #exercisesTable tr td:nth-of-type(5):before { content: "Aktionen:"; }
+
+    .actions {
+        text-align: right; /* Action buttons aligned to the right */
+        padding-top: 10px;
+        padding-bottom: 5px;
+    }
+
+    .actions button {
+        width: auto; /* Buttons adjust to content */
+        margin-bottom: 0; /* No extra margin */
+    }
+}
+
+/* STYLES FOR THE MODAL */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Positioned above content */
+    z-index: 1000; /* On top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Scrollbar if content is too large */
+    background-color: rgba(0,0,0,0.6); /* Black background with transparency */
+    padding-top: 60px; /* Space from the top edge */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% from top and bottom, horizontally centered */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 80%; /* Width of the modal */
+    max-width: 700px; /* Maximum width */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    animation: fadeIn 0.3s ease-out; /* Animation on opening */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+#weightChart {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    max-height: 300px; /* Maximum height for the chart */
+}
+
+#historyList {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px; /* Limited height for the list, if many entries */
+    overflow-y: auto; /* Scrollbar for the list */
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+#historyList li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#historyList li:last-child {
+    border-bottom: none;
+}
+
+#historyList li:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 95%; /* Wider on small screens */
+        margin: 20px auto;
+        padding: 15px;
+    }
+}
