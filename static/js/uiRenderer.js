@@ -51,7 +51,7 @@ export function renderExercises(exercises) {
 
         const currentWeightCell = row.insertCell();
         currentWeightCell.textContent = currentWeight;
-        currentWeightCell.setAttribute("data-label", "Aktuelles Gewicht (kg):"); // German data-label
+        currentWeightCell.setAttribute("data-label", "Gewicht (kg):"); // German data-label
 
         const lastUpdatedCell = row.insertCell();
         lastUpdatedCell.textContent = lastUpdatedDate;

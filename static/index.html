@@ -11,6 +11,8 @@
    </head>
    <body>
       <div class="container">
+         <button id="darkModeToggle" aria-label="Dark mode toggle" style="float: right; padding: 8px; font-size: 1.2em; cursor: pointer; background: none; border: none; color: var(--text-color);"><i class="fas fa-moon"></i></button>
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
          <h1>Kraftwerte</h1>
          <div id="message"></div>
          <table id="exercisesTable">
@@ -18,7 +20,7 @@
                <tr>
                   <th>Muskelgruppe</th>
                   <th>Übung</th>
-                  <th>Aktuelles Gewicht (kg)</th>
+                  <th>Gewicht (kg)</th>
                   <th>Zuletzt erfasst</th>
                   <th>Aktionen</th>
                </tr>
@@ -51,5 +53,5 @@
          </div>
       </div>
       <script type="module" src="/static/js/main.js"></script>
-   </body>
+      <script type="module" src="/static/js/darkMode.js"></script> </body>
 </html>
